@@ -35,7 +35,8 @@ public class SMSRPG extends Activity implements GetsMessages, HasDungeons
 		Dungeon d1 = new Dungeon();
 		d1.setName("scaaary dungeon");
 		Room startRoom = d1.addRoom("starterRoom");
-		startRoom.setDescription("You enter a very scaarry dungeon, the walls are very spooooky! There is a dusty haunted {tomb} on the ground\n");
+		startRoom.setDescription("You enter a very scaarry dungeon, the walls are very spooooky! There is a dusty haunted [tome] on the ground\n");
+		//startRoom.define("tome", "item");
 		d1.setStartRoom("starterRoom");
 		addDungeon(d1);
 		

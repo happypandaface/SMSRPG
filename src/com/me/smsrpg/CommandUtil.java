@@ -6,6 +6,20 @@ public class CommandUtil
 {
 	private String cmd;
 	private String[] args;
+	public static final String[] systemCommands = 
+	{
+		"play"
+	};
+	
+	public static boolean checkIsSystemCommand(String s)
+	{
+		for (int i = 0; i < systemCommands.length; ++i)
+		{
+			if (systemCommands[i].equals(s))
+				return true;
+		}
+		return false;
+	}
 	
 	public CommandUtil(String s)
 	{
@@ -21,7 +35,9 @@ public class CommandUtil
 			return false;
 		if (!hasParameter(0))
 			return false;
-		return args[0].toLowerCase().equals("play");
+		if (cmd.toLowerCase().equals(s))
+			return true;
+		return args[0].toLowerCase().equals(s);
 	}
 	
 	public boolean hasParameter(int num)
