@@ -1,9 +1,9 @@
 package com.me.smsrpg;
 
-import java.util.Map;
+import java.util.List;
 
 public interface HasDungeons
 {
-	Map<String, Dungeon> getDungeons();
+	List<Dungeon> getDungeons();
 	Dungeon getDungeon(String nme);
 }

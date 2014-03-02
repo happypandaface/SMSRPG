@@ -1,3 +1,6 @@
 # view AndroidManifest.xml #generated:15
 -keep class com.me.smsrpg.SMSRPG { <init>(...); }
 
+# view AndroidManifest.xml #generated:22
+-keep class com.me.smsrpg.SMSService { <init>(...); }
+

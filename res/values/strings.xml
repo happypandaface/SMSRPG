@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SMSRPG</string>
+	<string name="local_service_started">Local service has started</string>
+	<string name="local_service_stopped">Local service has stopped</string>
+	<string name="local_service_label">Text me a Quest</string>
 </resources>

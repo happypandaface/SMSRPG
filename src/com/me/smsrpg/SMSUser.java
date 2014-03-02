@@ -46,12 +46,13 @@ public class SMSUser implements Processor
 			{
 				if (lastDungeons == null)
 				{
-					Map<String, Dungeon> dungs = dungeonKeeper.getDungeons();
+					List<Dungeon> dungs = dungeonKeeper.getDungeons();
 					lastDungeons = new ArrayList<String>();
-					for (Map.Entry<String, Dungeon> entry : dungs.entrySet())
+					for (int dungNum = 0; dungNum < dungs.size(); ++dungNum)
 					{
-						String key = entry.getKey();
-						lastDungeons.add(key);
+						Dungeon dungeon = dungs.get(dungNum);
+						String dungeonName = dungeon.getName();
+						lastDungeons.add(dungeonName);
 					}
 				}
 				int dungNum = Integer.parseInt(cu.getParameter(1));
@@ -82,20 +83,27 @@ public class SMSUser implements Processor
 				else
 					strToSndBck += "Welcome back to SMSRPG!\n";
 				strToSndBck += "Here are the playable dungeons:\n";
-				int dungNum = 0;
 				
-				Map<String, Dungeon> dungs = dungeonKeeper.getDungeons();
-				lastDungeons = new ArrayList<String>();
-				for (Map.Entry<String, Dungeon> entry : dungs.entrySet())
+				int page = 0;
+				if (cu.isCommand("page") && cu.hasParameter(1))
 				{
-					++dungNum;
-					String key = entry.getKey();
-					Dungeon dungeon = entry.getValue();
-					lastDungeons.add(key);
-					strToSndBck += dungNum+". "+dungeon.getName()+"\n";
+					page = Integer.parseInt(cu.getParameter(1))-1;
+				}
+				
+				strToSndBck += "Dungeons page "+(page+1)+"\n";
+				List<Dungeon> dungs = dungeonKeeper.getDungeons();
+				lastDungeons = new ArrayList<String>();
+				for (int dungNum = 0; dungNum < dungs.size(); ++dungNum)
+				{
+					Dungeon dungeon = dungs.get(dungNum);
+					String dungeonName = dungeon.getName();
+					lastDungeons.add(dungeonName);
+					if (dungNum >= page*10 && dungNum < page*10+10)
+						strToSndBck += (dungNum+1)+". "+dungeonName+"\n";
 				}
 				strToSndBck += "Type \"play \" and then the number of the dungeon you want to play\n";
 				strToSndBck += "Example: #?play 1\n";
+				strToSndBck += "Or type \"page\" and then the number of the page you want to goto\n";
 				strToSndBck += "also remember all commands start with a \"#?\"\n";
 			}
 		}else

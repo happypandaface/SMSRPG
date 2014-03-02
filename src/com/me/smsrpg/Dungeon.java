@@ -24,6 +24,11 @@ public class Dungeon extends OptionHolder
 		return name;
 	}
 	
+	public boolean checkName(String n)
+	{
+		return name.equals(n);
+	}
+	
 	public Room addRoom(String nme)
 	{
 		for (int i = 0; i < rooms.size(); ++i)
