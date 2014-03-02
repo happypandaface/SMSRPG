@@ -1,0 +1,2 @@
+call cleanAnt.bat
+pause

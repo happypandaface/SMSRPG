@@ -1,0 +1,2 @@
+call buildAnt.bat
+pause

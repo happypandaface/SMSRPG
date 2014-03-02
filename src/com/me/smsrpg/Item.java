@@ -1,13 +1,12 @@
 package com.me.smsrpg;
 
-public class Item
+public class Item extends Option
 {
-	private String name;
 	private String description;
 	
-	public Item(String s)
+	public Item()
 	{
-		
+		super();
 	}
 	
 	public void setDescription(String s)
@@ -15,7 +14,8 @@ public class Item
 		description = s;
 	}
 	
-	public String useItem(DungeonState ds, String cmd)
+	@Override
+	public String process(Processor p, DungeonState ds, String cmd)
 	{
 		return description;
 	}

@@ -3,7 +3,7 @@ package com.me.smsrpg;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Dungeon
+public class Dungeon extends OptionHolder
 {
 	private String name;
 	private List<Room> rooms;
@@ -55,12 +55,13 @@ public class Dungeon
 		ds.setRoom(starterRoom);
 	}
 	
-	public String process(DungeonState ds, String s)
+	@Override
+	public String process(Processor p, DungeonState ds, String s)
 	{
 		Room sRoom = getRoom(ds.getRoom());
 		if (sRoom == null)
 			return null;
-		return sRoom.process(ds, s);
+		return sRoom.process(this, ds, s);
 	}
 	
 	public boolean setStartRoom(Room rm)

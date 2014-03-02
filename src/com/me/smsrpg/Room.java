@@ -5,30 +5,31 @@ import java.util.regex.Pattern;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Room
+public class Room extends OptionHolder
 {
-	private String name;
 	private String description;
-	private List<String> options;
-	private List<Item> items;
+	private List<String> descOpts;// list of bracketed things in the description
+	private List<Option> options;
 	
 	public Room(String s)
 	{
 		name = s;
-		options = new ArrayList<String>();
+		descOpts = new ArrayList<String>();
+		options = new ArrayList<Option>();
 	}
 	
-	public String process(DungeonState ds, String cmd)
+	@Override
+	public String process(Processor p, DungeonState ds, String cmd)
 	{
 		String rmRtrnStr = "";
 		boolean commandWorked = false;
 		CommandUtil cu = new CommandUtil(cmd);
 		for (int i = 0; i < options.size(); ++i)
 		{
-			if (cu.isCommand(options.get(i)))
+			Option item = options.get(i);
+			if (cu.isCommand(item))
 			{
-				rmRtrnStr += "You used the "+options.get(i)+"\n";
-				
+				rmRtrnStr += item.process(p, ds, cmd);
 				commandWorked = true;
 			}
 		}
@@ -53,9 +54,25 @@ public class Room
 			itemStr = itemStr.substring(1, itemStr.length()-1);
 			// make sure it's not a system command
 			if (!CommandUtil.checkIsSystemCommand(itemStr))
-				options.add(itemStr);
+				descOpts.add(itemStr);
 		}
 		description = s;
+	}
+	
+	public <T extends Option> T define(String option, Option opt, Class<T> type)
+	{
+		boolean foundOption = false;
+		for (int i = 0; i < descOpts.size(); ++i)
+		{
+			if (descOpts.get(i).equals(option))
+				foundOption = true;
+		}
+		// it should be []'d in the description of the room (unless it's hidden which is not implemented yet)
+		if (!foundOption)
+			return null;
+		opt.setName(option);
+		options.add(opt);
+		return type.cast(opt);
 	}
 	
 	public String getDescription()

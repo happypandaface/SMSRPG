@@ -10,6 +10,11 @@ public class CommandUtil
 	{
 		"play"
 	};
+	public static final String[] commandStartChars = 
+	{
+		"#?",
+		"*-"
+	};
 	
 	public static boolean checkIsSystemCommand(String s)
 	{
@@ -21,12 +26,27 @@ public class CommandUtil
 		return false;
 	}
 	
+	public static boolean checkIsStartChars(String s)
+	{
+		for (int i = 0; i < commandStartChars.length; ++i)
+		{
+			if (commandStartChars[i].equals(s))
+				return true;
+		}
+		return false;
+	}
+	
 	public CommandUtil(String s)
 	{
 		cmd = s;
 		args = cmd.split(" ");
 		if (args[0].equals(""))
 			args = Arrays.copyOfRange(args, 1, args.length);
+	}
+	
+	public boolean isCommand(Option opt)
+	{
+		return isCommand(opt.getName());
 	}
 	
 	public boolean isCommand(String s)

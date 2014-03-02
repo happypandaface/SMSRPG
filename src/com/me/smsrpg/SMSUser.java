@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-public class SMSUser
+public class SMSUser implements Processor
 {
 	private String address;
 	private boolean notFirstMessage;
@@ -31,7 +31,12 @@ public class SMSUser
 		return address;
 	}
 	
-	public void process(String s)
+	public String process(String cmd)
+	{
+		return process(this, userState, cmd);
+	}
+	
+	public String process(Processor p, DungeonState ds, String s)
 	{
 		String strToSndBck = "";
 		if (currentDungeon == null)
@@ -55,9 +60,10 @@ public class SMSUser
 					strToSndBck += "You are now playing "+lastDungeons.get(dungNum-1)+" type \"leave\" to leave the dungeon\n";
 					strToSndBck += "Remember that it's #?leave because all commands start with #? Okay now I'm not going to give you this hint again!\n";
 					currentDungeon = dungeonKeeper.getDungeon(lastDungeons.get(dungNum-1));
+					// disregard the parameter "ds"
 					userState = new DungeonState();
 					currentDungeon.reset(userState);
-					String dungeonIntro = currentDungeon.process(userState, "");
+					String dungeonIntro = currentDungeon.process(p, userState, "");
 					if (dungeonIntro == null)
 					{
 						currentDungeon = null;
@@ -94,7 +100,7 @@ public class SMSUser
 			}
 		}else
 		{
-			String dungeonStr = currentDungeon.process(userState, s);
+			String dungeonStr = currentDungeon.process(p, userState, s);
 			if (dungeonStr == null)
 			{
 				strToSndBck += "Thank you for playing "+currentDungeon.getName()+"\n";
@@ -107,6 +113,7 @@ public class SMSUser
 		
 		sendMessage(strToSndBck);
 		notFirstMessage = true;
+		return null;
 	}
 	
 	private void sendMessage(String s)
